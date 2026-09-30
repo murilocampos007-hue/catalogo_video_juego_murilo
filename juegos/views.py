@@ -4,5 +4,6 @@ from .models import Juego
 # Create your views here.
 
 def mirar_catalogo(request):
-    todos_los_juegos = Juego.objetcs.all()
-    return render(request, 'catalogo.html', {})
+    """Listado de juegos y enseña todo en una única página."""
+    todos_los_juegos = Juego.objects.all()
+    return render(request, 'catalogo.html', {'juegos': todos_los_juegos})
