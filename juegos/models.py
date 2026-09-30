@@ -70,6 +70,9 @@ class Resena(models.Model):
     comentario = models.TextField()
     fecha = models.DateField(auto_now_add=True)
 
+    class Meta:
+        verbose_name_plural = "Reseñas"
+
     def __str__(self):
         return (f"{self.usuario} - {self.juego} ({self.puntuacion}/10)")
 
@@ -82,6 +85,9 @@ class Perfil(models.Model):
     pais = models.CharField(max_length=15, null=True, blank=True)
     plataforma_favorita = models.ForeignKey(Plataforma, on_delete=models.SET_NULL, null=True, blank=True)
     juego_favorito = models.ForeignKey(Juego, on_delete=models.SET_NULL, null=True, blank=True)
+
+    class Meta:
+            verbose_name_plural = "Perfiles"
 
     def __str__(self):
         return f"{self.usuario}"
