@@ -22,6 +22,7 @@ class Franquicia(models.Model):
     """Franquicia de juegos."""
     nombre = models.CharField(max_length=200)
     descripcion = models.TextField()
+    imagen = models.URLField(max_length=500)
 
     def __str__(self):
         return self.nombre
@@ -56,6 +57,7 @@ class Juego(models.Model):
     plataformas = models.ManyToManyField(Plataforma)
     fecha_lanzamiento = models.DateField()
     descripcion = models.TextField()
+    imagen = models.URLField(max_length=500)
 
     def __str__(self):
         return self.titulo
@@ -85,6 +87,7 @@ class Perfil(models.Model):
     pais = models.CharField(max_length=15, null=True, blank=True)
     plataforma_favorita = models.ForeignKey(Plataforma, on_delete=models.SET_NULL, null=True, blank=True)
     juego_favorito = models.ForeignKey(Juego, on_delete=models.SET_NULL, null=True, blank=True)
+    foto = models.URLField(max_length=500, null=True, blank=True)
 
     class Meta:
             verbose_name_plural = "Perfiles"
