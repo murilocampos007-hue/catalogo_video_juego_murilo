@@ -5,7 +5,8 @@
     <ul>
         {% for elemento in franquicia.juego_set.all %}
             <li>
-                {{ elemento.titulo }} 
+              {{ elemento.titulo }} 
+                <a href="/juegos/{{ elemento.id }}/"> [+ Ver ficha] </a>
             </li>
         {% endfor %}
     </ul>

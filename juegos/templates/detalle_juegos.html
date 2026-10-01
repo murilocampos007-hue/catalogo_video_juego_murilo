@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block contenido %}
+    <h2>{{juego.titulo}}</h2>
+    <p> Fecha: {{juego.fecha_lanzamiento}} </p>
+    <p> Desarrolladora: {{juego.desarrollador}} </p>
+    <p> Distribuidora: {{juego.distribuidor}} </p>
+    <p> Franquia: {{juego.franquicia}} </p>
+    <p> Descripción: {{juego.descripcion}} </p>
+
+ <div> <h3>Géneros:</h3>
+    <ul>
+        {% for elemento in juego.generos.all %}
+            <li>
+                {{ elemento.nombre }} 
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div> <h3>Plataformas:</h3>
+    <ul>
+        {% for elemento in juego.plataformas.all %}
+            <li>
+                {{ elemento.nombre }} 
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
