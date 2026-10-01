@@ -20,5 +20,6 @@ from juegos import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('catalogo/', views.mirar_catalogo)
+    path('catalogo/', views.mirar_catalogo, name='catalogo'),
+    path('franquicias/<int:id_franquicia>/', views.mirar_franquicia, name='detalle_franquicia') 
 ]

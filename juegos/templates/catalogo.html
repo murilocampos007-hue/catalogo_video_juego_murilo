@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-{% block catalogos_franquicias %}
+{% block contenido %}
     <h2>Catálogo de Franquicias</h2>
     <ul>
-        {% for elemento in juegos %}
+        {% for elemento in franquicias %}
             <li>
-                {{ elemento.titulo }} 
-                <a href="/juegos/{{ elemento.id }}/"> [+ Ver ficha] </a>
+                {{ elemento.nombre }} 
+                <a href="/franquicias/{{ elemento.id }}/"> [+ Ver ficha] </a>
             </li>
         {% endfor %}
     </ul>

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block contenido %}
+    <h2>{{franquicia.nombre}}</h2>
+    <p> {{franquicia.descripcion}} </p>
+    <ul>
+        {% for elemento in franquicia.juego_set.all %}
+            <li>
+                {{ elemento.titulo }} 
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
