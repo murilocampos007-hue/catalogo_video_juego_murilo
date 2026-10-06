@@ -3,6 +3,7 @@ from .models import Franquicia, Juego
 from .forms import JuegoForm, FranquiciaForm
 import logging
 import re
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 
@@ -31,7 +32,7 @@ def crear_juego(request):
             try:
                 juego = form.save()
                 logger.info(f"El Juego {juego.titulo} se creó con éxito.")
-                return redirect ('catalogo')
+                return redirect ('detalle_juego', id_juego=juego.id)
 
             except Exception:
                 logger.exception("Error en añadir Juego.")
@@ -66,6 +67,7 @@ def borrar_juego(request, id_juego):
     if request.method == "POST":
         try:
             juego_del.delete()
+            logger.info(f"El Juego {juego_del.titulo} se borró con éxito.")
             return redirect ('catalogo')
            
     
@@ -73,7 +75,6 @@ def borrar_juego(request, id_juego):
             logger.exception("Error al borrar el Juego.")
     return render(request, 'confirmar_borrado.html', {'juego': juego_del})
 
-logger = logging.getLogger(__name__)
 
 
 def crear_franquicia(request):
@@ -81,9 +82,9 @@ def crear_franquicia(request):
         form = FranquiciaForm(request.POST)
         if form.is_valid():
             try:
-                Franquicia = form.save()
-                logger.info(f"La Franquicia {Franquicia.titulo} se creó con éxito.")
-                return redirect ('catalogo')
+                franquicia = form.save()
+                logger.info(f"La Franquicia {Franquicia.nombre} se creó con éxito.")
+                return redirect ('detalle_franquicia', id_franquicia=franquicia.id)
 
             except Exception:
                 logger.exception("Error en añadir Franquicia.")
@@ -102,11 +103,11 @@ def editar_franquicia(request, id_franquicia):
             try:
                 editor = form.save()
                 logger.info(f"La Franquicia {editor.nombre} se editó con éxito.")
-                return redirect('detalle_juego', id_franquicia=franquicia.id)
+                return redirect('detalle_franquicia', id_franquicia=franquicia.id)
 
             except Exception:
-                logger.exception("Error al editar Juego.")
-                form.add_error(None, "No se pudio editar el Juego.")
+                logger.exception("Error al editar la Franquicia.")
+                form.add_error(None, "No se pudio editar la Franquicia.")
 
     else:
         form = FranquiciaForm(instance=franquicia)
@@ -118,11 +119,9 @@ def borrar_franquicia(request, id_franquicia):
     if request.method == "POST":
         try:
             franquicia_del.delete()
+            logger.info(f"La Franquicia{franquicia_del.nombre} se borró con éxito.")
             return redirect ('catalogo')
-           
     
         except Exception:
             logger.exception("Error al borrar la Franquicia.")
     return render(request, 'borrar_franquicia.html', {'franquicia': franquicia_del})
-
-logger = logging.getLogger(__name__)
