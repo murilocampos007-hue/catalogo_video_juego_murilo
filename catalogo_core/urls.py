@@ -22,5 +22,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('catalogo/', views.mirar_catalogo, name='catalogo'),
     path('franquicias/<int:id_franquicia>/', views.mirar_franquicia, name='detalle_franquicia'),
-    path('juegos/<int:id_juego>/', views.mirar_ficha, name='detalle_juego')
+    path('juegos/<int:id_juego>/', views.mirar_ficha, name='detalle_juego'),
+    path('juegos/nuevo/', views.crear_juego, name='crear_juego'),
+    path('juegos/editar/<int:id_juego>/', views.editar_juego, name='editar_juego'),
+    path('juegos/borrar/<int:id_juego>/', views.borrar_juego, name='borrar_juego'),
+    path('franquicias/nuevo/', views.crear_franquicia, name='crear_franquicia'),
+    path('franquicias/editar/<int:id_franquicias>/', views.editar_franquicia, name='editar_franquicia'),
+    path('franquicias/borrar/<int:id_franquicias>/', views.borrar_franquicia, name='borrar_franquicia'),
 ]

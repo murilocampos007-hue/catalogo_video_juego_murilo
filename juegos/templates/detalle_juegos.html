@@ -1,11 +1,19 @@
 {% extends 'base.html' %}
 {% block contenido %}
-    <h2>{{juego.titulo}}</h2>
-    <p> Fecha: {{juego.fecha_lanzamiento}} </p>
-    <p> Desarrolladora: {{juego.desarrollador}} </p>
-    <p> Distribuidora: {{juego.distribuidor}} </p>
-    <p> Franquia: {{juego.franquicia}} </p>
-    <p> Descripción: {{juego.descripcion}} </p>
+    <h2>{{ juego.titulo }}</h2>
+    <div><form method="GET" action="/juegos/editar/{{juego.id}}/">
+    <button type="submit">Editar juego</button>
+</form>
+<form method="GET" action="/juegos/borrar/{{juego.id}}/">
+    <button type="submit">Borrar juego</button>
+</form>
+</div>
+    <img src="{{ juego.imagen }}" alt="{{ juego.titulo }}">
+    <p> Fecha: {{ juego.fecha_lanzamiento }} </p>
+    <p> Desarrolladora: {{ juego.desarrollador }} </p>
+    <p> Distribuidora: {{ juego.distribuidor }} </p>
+    <p> Franquia: {{ juego.franquicia }} </p>
+    <p> Descripción: {{ juego.descripcion }} </p>
 
  <div> <h3>Géneros:</h3>
     <ul>
