@@ -7,7 +7,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Empresa(models.Model):
     """Empresa que desarrolla o distribuye juegos."""
-    nombre = models.CharField(max_length=200)
+    nombre = models.CharField(max_length=200, unique=True)
     director_ejecutivo = models.CharField(max_length=200)
     localizacion = models.CharField(max_length=200)
     anio_fundacion = models.IntegerField(verbose_name="Año de Fundación")
@@ -20,7 +20,7 @@ class Empresa(models.Model):
 
 class Franquicia(models.Model):
     """Franquicia de juegos."""
-    nombre = models.CharField(max_length=200)
+    nombre = models.CharField(max_length=200, unique=True)
     descripcion = models.TextField()
     imagen = models.URLField(max_length=500)
 
@@ -31,14 +31,14 @@ class Franquicia(models.Model):
 
 class Genero(models.Model):
     """Géneros de videojuegos."""
-    nombre = models.CharField(max_length=200)
+    nombre = models.CharField(max_length=200, unique=True)
 
     def __str__(self):
         return self.nombre
 
 class Plataforma(models.Model):
     """Plataformas como consolas, PC o mobile."""
-    nombre = models.CharField(max_length=200)
+    nombre = models.CharField(max_length=200, unique=True)
     fabricante = models.ForeignKey(Empresa, on_delete=models.SET_NULL, null=True, blank=True)
     fecha_lanzamiento = models.DateField(null=True, blank=True)
 
@@ -49,7 +49,7 @@ class Plataforma(models.Model):
     
 class Juego(models.Model):
     """Representa un videojuego del catálogo."""
-    titulo = models.CharField(max_length=200)
+    titulo = models.CharField(max_length=200, unique=True)
     desarrollador = models.ForeignKey(Empresa, on_delete=models.SET_NULL, null=True, blank=True, related_name="juegos_desarrollados")
     distribuidor = models.ForeignKey(Empresa, on_delete=models.SET_NULL, null=True, blank=True, related_name="juegos_distribuidos")
     franquicia = models.ForeignKey(Franquicia, on_delete=models.SET_NULL, null=True, blank=True)
@@ -82,7 +82,7 @@ class Resena(models.Model):
 
 class Perfil(models.Model):
     """Perfil del usuario."""
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
     biografia = models.TextField(null=True, blank=True)
     pais = models.CharField(max_length=15, null=True, blank=True)
     plataforma_favorita = models.ForeignKey(Plataforma, on_delete=models.SET_NULL, null=True, blank=True)
