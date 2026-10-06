@@ -128,7 +128,11 @@ MAILERS = {
     },
 }
 
+LOGIN_REDIRECT_URL = 'catalogo'
+LOGOUT_REDIRECT_URL = 'catalogo'
+
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    filename='logging_catalogo.txt',
 )

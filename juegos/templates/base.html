@@ -1,11 +1,24 @@
 <!DOCTYPE html>
 <html lang = "es">
+
 <head> <meta charset="UTF-8">
     <title> Catálogo RPG/JRPG </title>
 </head>
 <body>
     <h1> 🎮 LOS MEJORES JUEGOS RPG/JRPG QUE PUEDE ENCONTRAR! </h1><hr>
-    <!-- AQUÍ INYECTAMOS UN AGUJERO NEGRO QUE RELLENARÁN OTROS ARCHIVOS HTML -->
+     {% block cabecera %}
+    {% if user.is_authenticated %}
+        <div> Hola, {{ user.username }}!</div>
+        <form method="POST" action="/accounts/logout/">
+            {% csrf_token %}
+            <button type="submit">Salir</button>
+        </form>
+    {% else %}
+        <form method="GET" action="/accounts/login/">
+            <button type="submit">Entrar</button>
+        </form>
+    {% endif %}
+    {% endblock %}
     {% block contenido %}{% endblock %}
 </body>
 </html>
