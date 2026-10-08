@@ -6,19 +6,28 @@
 </head>
 <body>
     <h1> 🎮 LOS MEJORES JUEGOS RPG/JRPG QUE PUEDE ENCONTRAR! </h1><hr>
+
      {% block cabecera %}
     {% if user.is_authenticated %}
         <div> Hola, {{ user.username }}!</div>
+
         <form method="POST" action="/accounts/logout/">
             {% csrf_token %}
             <button type="submit">Salir</button>
         </form>
+
     {% else %}
         <form method="GET" action="/accounts/login/">
             <button type="submit">Entrar</button>
         </form>
+        
+        <form method="GET" action="/registro/">
+            <button type="submit">Registrarse</button>
+        </form>
+
     {% endif %}
     {% endblock %}
+
     {% block contenido %}{% endblock %}
 </body>
 </html>

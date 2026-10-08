@@ -1,21 +1,26 @@
 {% extends 'base.html' %}
 {% block contenido %}
     <h2>{{ juego.titulo }}</h2>
-    <div><form method="GET" action="/juegos/editar/{{juego.id}}/">
-    <button type="submit">Editar juego</button>
-</form>
-<form method="GET" action="/juegos/borrar/{{juego.id}}/">
-    <button type="submit">Borrar juego</button>
-</form>
-</div>
-    <img src="{{ juego.imagen }}" alt="{{ juego.titulo }}">
-    <p> Fecha: {{ juego.fecha_lanzamiento }} </p>
-    <p> Desarrolladora: {{ juego.desarrollador }} </p>
-    <p> Distribuidora: {{ juego.distribuidor }} </p>
-    <p> Franquia: {{ juego.franquicia }} </p>
-    <p> Descripción: {{ juego.descripcion }} </p>
+    <div>{% if perms.juegos.change_juego %}
+        <form method="GET" action="/juegos/editar/{{juego.id}}/">
+            <button type="submit">Editar juego</button>
+        </form>
+    {% endif %}
 
- <div> <h3>Géneros:</h3>
+    {% if perms.juegos.delete_juego %}
+        <form method="GET" action="/juegos/borrar/{{juego.id}}/">
+            <button type="submit">Borrar juego</button>
+        </form>
+    {% endif %}</div>
+
+    <img src="{{ juego.imagen }}" alt="{{ juego.titulo }}">
+    <div> <h3> Fecha </h3> <p> {{ juego.fecha_lanzamiento }} </p> </div>
+    <div> <h3> <p> Desarrolladora </h3> <p> {{ juego.desarrollador }} </p> </div>
+    <div> <h3> <p> Distribuidora </h3> <p> {{ juego.distribuidor }} </p> </div>
+    <div> <h3> <p> Franquia </h3> <p> {{ juego.franquicia }} </p> </div>
+    <div> <h3> <p> Descripción </h3> <p> {{ juego.descripcion }} </p> </div>
+
+ <div> <h3>Géneros</h3>
     <ul>
         {% for elemento in juego.generos.all %}
             <li>
@@ -25,7 +30,7 @@
     </ul>
 </div>
 
-<div> <h3>Plataformas:</h3>
+<div> <h3>Plataformas</h3>
     <ul>
         {% for elemento in juego.plataformas.all %}
             <li>
@@ -33,5 +38,39 @@
             </li>
         {% endfor %}
     </ul>
+</div>
+
+<div>
+    <h3>Reseñas</h3>
+            <ul>
+                {% for elemento in juego.resena_set.all %}
+                <li>
+                    <div><a href="#"> {{ elemento.usuario }}  </a>, {{ elemento.puntuacion }}/10 ({{ elemento.fecha }})</div>
+                    {{ elemento.comentario }}
+                    {% if elemento.usuario == user %}
+                        <form method="GET" action='/resenas/editar/{{ elemento.id }}/'>
+                            <button type="submit">Editar reseña</button>
+                        </form>
+                    {% endif %}
+
+                    {% if elemento.usuario == user or perms.juegos.delete_resena %}
+                        <form method="GET" action='/resenas/borrar/{{ elemento.id }}/'>
+                            <button type="submit">Borrar reseña</button>
+                        </form>
+                    {% endif %}
+                </li>
+                
+                {% empty %} <li>Sin reseñas.</li>
+                {% endfor %}
+            </ul>
+</div>
+
+
+<div>
+    {% if user.is_authenticated %}
+        <form method="GET" action="/resenas/nueva/{{juego.id}}/">
+            <button type="submit">Escribir reseña</button>
+        </form>
+    {% endif %}
 </div>
 {% endblock %}

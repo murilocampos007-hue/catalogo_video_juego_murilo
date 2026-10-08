@@ -1,11 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Franquicia, Juego
-from .forms import JuegoForm, FranquiciaForm
+from .models import Franquicia, Juego, Resena 
+from .forms import JuegoForm, FranquiciaForm, ResenaForm
 import logging
-import re
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.forms import UserCreationForm 
 logger = logging.getLogger(__name__)
 
 # Create your views here.
+
 
 def mirar_catalogo(request):
     """Listado de franquicias y enseña todo en una única página."""
@@ -25,6 +27,7 @@ def mirar_ficha(request, id_juego):
     return render(request, 'detalle_juegos.html', {'juego': juego_seleccionado})
 
 
+@permission_required('juegos.add_juego')
 def crear_juego(request):
     if request.method == "POST":
         form = JuegoForm(request.POST)
@@ -36,13 +39,14 @@ def crear_juego(request):
 
             except Exception:
                 logger.exception("Error en añadir Juego.")
-                form.add_error(None, "No se pudio añadir el Juego al Sistema.")
+                form.add_error(None, "No se pudo añadir el Juego al Sistema.")
 
     else:
         form = JuegoForm()
     return render(request, 'formulario.html', {'form': form})
 
 
+@permission_required('juegos.change_juego')
 def editar_juego(request, id_juego):
     juego = get_object_or_404(Juego, id=id_juego)
     if request.method == "POST":
@@ -55,13 +59,14 @@ def editar_juego(request, id_juego):
 
             except Exception:
                 logger.exception("Error al editar Juego.")
-                form.add_error(None, "No se pudio editar el Juego.")
+                form.add_error(None, "No se pudo editar el Juego.")
 
     else:
         form = JuegoForm(instance=juego)
     return render(request, 'formulario.html', {'form': form})
 
 
+@permission_required('delete.add_juego')
 def borrar_juego(request, id_juego):
     juego_del = get_object_or_404(Juego, id=id_juego)
     if request.method == "POST":
@@ -76,25 +81,26 @@ def borrar_juego(request, id_juego):
     return render(request, 'confirmar_borrado.html', {'juego': juego_del})
 
 
-
+@permission_required('juegos.add_franquicia')
 def crear_franquicia(request):
     if request.method == "POST":
         form = FranquiciaForm(request.POST)
         if form.is_valid():
             try:
                 franquicia = form.save()
-                logger.info(f"La Franquicia {Franquicia.nombre} se creó con éxito.")
+                logger.info(f"La Franquicia {franquicia.nombre} se creó con éxito.")
                 return redirect ('detalle_franquicia', id_franquicia=franquicia.id)
 
             except Exception:
                 logger.exception("Error en añadir Franquicia.")
-                form.add_error(None, "No se pudio añadir la Franquicia al Sistema.")
+                form.add_error(None, "No se pudo añadir la Franquicia al Sistema.")
 
     else:
         form = FranquiciaForm()
     return render(request, 'formulario.html', {'form': form})
 
 
+@permission_required('juegos.change_franquicia')
 def editar_franquicia(request, id_franquicia):
     franquicia = get_object_or_404(Franquicia, id=id_franquicia)
     if request.method == "POST":
@@ -107,21 +113,103 @@ def editar_franquicia(request, id_franquicia):
 
             except Exception:
                 logger.exception("Error al editar la Franquicia.")
-                form.add_error(None, "No se pudio editar la Franquicia.")
+                form.add_error(None, "No se pudo editar la Franquicia.")
 
     else:
         form = FranquiciaForm(instance=franquicia)
     return render(request, 'formulario.html', {'form': form})
 
 
+@permission_required('juegos.delete_franquicia')
 def borrar_franquicia(request, id_franquicia):
     franquicia_del = get_object_or_404(Franquicia, id=id_franquicia)
     if request.method == "POST":
         try:
             franquicia_del.delete()
-            logger.info(f"La Franquicia{franquicia_del.nombre} se borró con éxito.")
+            logger.info(f"La Franquicia {franquicia_del.nombre} se borró con éxito.")
             return redirect ('catalogo')
     
         except Exception:
             logger.exception("Error al borrar la Franquicia.")
     return render(request, 'borrar_franquicia.html', {'franquicia': franquicia_del})
+
+
+def crear_cuenta(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            try:
+                cuenta = form.save()
+                logger.info(f"El perfil {cuenta.username} se creó con éxito.")
+                return redirect ('login')
+
+            except Exception:
+                logger.exception("Error en crear un perfil.")
+                form.add_error(None, "No se pudo añadir el perfil al Sistema.")
+
+    else:
+        form = UserCreationForm()
+    return render(request, 'registro.html', {'form': form})
+
+
+@login_required
+def crear_resena(request, id_juego):
+    juego = get_object_or_404(Juego, id=id_juego)
+    if request.method == "POST":
+        form = ResenaForm(request.POST)
+        if form.is_valid():
+            try:
+                resena = form.save(commit=False)
+                resena.juego = juego
+                resena.usuario = request.user
+                resena.save()
+                logger.info(f"La reseña de {resena.usuario} se publicó con éxito.")
+                return redirect ('detalle_juego', id_juego)
+
+            except Exception:
+                logger.exception("Error en publicar reseña.")
+                form.add_error(None, "No se pudo publicar la reseña.")
+
+    else:
+        form = ResenaForm()
+    return render(request, 'formulario.html', {'form': form})
+
+
+@login_required
+def editar_resena(request, id_resena):
+    resena = get_object_or_404(Resena, id=id_resena)
+    if resena.usuario != request.user:
+        return redirect('detalle_juego', id_juego=resena.juego.id)
+    else:
+        if request.method == "POST":
+            form = ResenaForm(request.POST, instance=resena)
+            if form.is_valid():
+                try:
+                    editor = form.save()
+                    logger.info(f"La reseña de {editor.usuario} se editó con éxito.")
+                    return redirect('detalle_juego', id_juego=resena.juego.id)
+
+                except Exception:
+                    logger.exception("Error al editar reseña.")
+                    form.add_error(None, "No se pudo editar la reseña.")
+
+        else:
+            form = ResenaForm(instance=resena)
+        return render(request, 'formulario.html', {'form': form})
+
+
+@login_required
+def borrar_resena(request, id_resena):
+    resena_del = get_object_or_404(Resena, id=id_resena)
+    id_juego = resena_del.juego.id
+    if resena_del.usuario != request.user and not request.user.has_perm('juegos.delete_resena'):
+        return redirect('detalle_juego', id_juego=id_juego)
+    if request.method == "POST":
+        try:
+            resena_del.delete()
+            logger.info(f"La reseña de {resena_del.usuario} se borró con éxito.")
+            return redirect ('detalle_juego', id_juego=id_juego)
+        
+        except Exception:
+            logger.exception("Error al borrar la reseña.")
+    return render(request, 'borrar_resena.html', {'resena': resena_del})

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Juego, Franquicia
+from .models import Juego, Franquicia, Resena
 import re
 
 class JuegoForm(forms.ModelForm):
@@ -17,6 +17,7 @@ class JuegoForm(forms.ModelForm):
             raise forms.ValidationError("Titulo tiene que empezar con un número o letra.")
         return verificacion_juego
 
+
 class FranquiciaForm(forms.ModelForm):
     class Meta:
         model = Franquicia
@@ -28,6 +29,12 @@ class FranquiciaForm(forms.ModelForm):
         padron = re.compile(r"^\w")
         texto = padron.match(verificacion_franquicia)
         if texto == None:
-            raise forms.ValidationError("Titulo tiene que empezar con un número o letra.")
+            raise forms.ValidationError("Nombre tiene que empezar con un número o letra.")
         return verificacion_franquicia
+
+class ResenaForm(forms.ModelForm):
+    class Meta:
+        model = Resena
+        fields = ['puntuacion', 'comentario',
+        ]
 

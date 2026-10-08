@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% block contenido %}
     <h2>Catálogo de Franquicias</h2>
-    <form method="GET" action="/franquicias/nuevo/">
-    <button type="submit">Añadir franquicias</button>
-</form>
+    {% if perms.juegos.add_franquicia %}
+        <form method="GET" action="/franquicias/nuevo/">
+            <button type="submit">Añadir franquicias</button>
+        </form>
+    {% endif %}
     <ul>
         {% for elemento in franquicias %}
             <li>

@@ -30,5 +30,9 @@ urlpatterns = [
     path('franquicias/nuevo/', views.crear_franquicia, name='crear_franquicia'),
     path('franquicias/editar/<int:id_franquicia>/', views.editar_franquicia, name='editar_franquicia'),
     path('franquicias/borrar/<int:id_franquicia>/', views.borrar_franquicia, name='borrar_franquicia'),
-    path('accounts/', include('django.contrib.auth.urls'), name='perfil'),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('registro/', views.crear_cuenta, name='registro'),
+    path('resenas/nueva/<int:id_juego>/', views.crear_resena, name='crear_resena'),
+    path('resenas/editar/<int:id_resena>/', views.editar_resena, name='editar_resena'),
+    path('resenas/borrar/<int:id_resena>/', views.borrar_resena, name='borrar_resena'),
 ]

@@ -1,13 +1,19 @@
 {% extends 'base.html' %}
 {% block contenido %}
     <h2>{{franquicia.nombre}}</h2>
-<div><form method="GET" action="/franquicias/editar/{{franquicia.id}}/">
-    <button type="submit">Editar franquicia</button>
-    </form>
-    <form method="GET" action="/franquicias/borrar/{{franquicia.id}}/">
-    <button type="submit">Borrar franquicia</button>
-</form>
-</div>
+
+        <div>{% if perms.juegos.change_franquicia %}
+        <form method="GET" action="/franquicias/editar/{{franquicia.id}}/">
+            <button type="submit">Editar franquicia</button>
+        </form>
+        {% endif %}
+
+        {% if perms.juegos.delete_franquicia %}
+        <form method="GET" action="/franquicias/borrar/{{franquicia.id}}/">
+            <button type="submit">Borrar franquicia</button>
+        </form>
+        {% endif %}</div>
+
     <img src="{{ franquicia.imagen }}" alt="{{ franquicia.nombre }}">
     <p> {{franquicia.descripcion}} </p>
 
@@ -19,8 +25,11 @@
             </li>
         {% endfor %}
     </ul>
-    <div><form method="GET" action="/juegos/nuevo/">
-    <button type="submit">Añadir juego</button>
-    </form>
-</div>
+    
+    <div>{% if perms.juegos.add_juego %}
+            <form method="GET" action="/juegos/nuevo/">
+                <button type="submit">Añadir juego</button>
+            </form>
+    {% endif %}</div>
+
 {% endblock %}
