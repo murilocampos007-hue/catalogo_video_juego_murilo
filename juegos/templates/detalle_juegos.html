@@ -1,26 +1,26 @@
 {% extends 'base.html' %}
 {% block contenido %}
     <h2>{{ juego.titulo }}</h2>
-    <div>{% if perms.juegos.change_juego %}
+    <div class="botones">{% if perms.juegos.change_juego %}
         <form method="GET" action="/juegos/editar/{{juego.id}}/">
-            <button type="submit">Editar juego</button>
+            <button class="nes-btn is-warning" type="submit">Editar juego</button>
         </form>
     {% endif %}
 
     {% if perms.juegos.delete_juego %}
         <form method="GET" action="/juegos/borrar/{{juego.id}}/">
-            <button type="submit">Borrar juego</button>
+            <button class="nes-btn is-error" type="submit">Borrar juego</button>
         </form>
     {% endif %}</div>
 
-    <img src="{{ juego.imagen }}" alt="{{ juego.titulo }}">
-    <div> <h3> Fecha </h3> <p> {{ juego.fecha_lanzamiento }} </p> </div>
-    <div> <h3> Desarrolladora </h3> <p> {{ juego.desarrollador }} </p> </div>
-    <div> <h3> Distribuidora </h3> <p> {{ juego.distribuidor }} </p> </div>
-    <div> <h3> Franquia </h3> <p> {{ juego.franquicia }} </p> </div>
-    <div> <h3> Descripción </h3> <p> {{ juego.descripcion }} </p> </div>
+    <img class="portada" src="{{ juego.imagen }}" alt="{{ juego.titulo }}">
+    <div class="info"> <h3> Fecha </h3> <p> {{ juego.fecha_lanzamiento }} </p> </div>
+    <div class="info"> <h3> Desarrolladora </h3> <p> {{ juego.desarrollador }} </p> </div>
+    <div class="info"> <h3> Distribuidora </h3> <p> {{ juego.distribuidor }} </p> </div>
+    <div class="info"> <h3> Franquicia </h3> <p> {{ juego.franquicia }} </p> </div>
+    <div class="info"> <h3> Descripción </h3> <p> {{ juego.descripcion }} </p> </div>
 
- <div> <h3>Géneros</h3>
+ <div class="info"> <h3>Géneros</h3>
     <ul>
         {% for elemento in juego.generos.all %}
             <li>
@@ -30,7 +30,7 @@
     </ul>
 </div>
 
-<div> <h3>Plataformas</h3>
+<div class="info"> <h3>Plataformas</h3>
     <ul>
         {% for elemento in juego.plataformas.all %}
             <li>
@@ -44,18 +44,18 @@
     <h3>Reseñas</h3>
             <ul>
                 {% for elemento in juego.resena_set.all %}
-                <li>
+                <li class="nes-container">
                     <div><a href="/perfiles/{{ elemento.usuario.id }}/"> {{ elemento.usuario }}  </a>, {{ elemento.puntuacion }}/10 ({{ elemento.fecha }})</div>
                     {{ elemento.comentario }}
                     {% if elemento.usuario == user %}
                         <form method="GET" action='/resenas/editar/{{ elemento.id }}/'>
-                            <button type="submit">Editar reseña</button>
+                            <button class="nes-btn is-warning" type="submit">Editar reseña</button>
                         </form>
                     {% endif %}
 
                     {% if elemento.usuario == user or perms.juegos.delete_resena %}
                         <form method="GET" action='/resenas/borrar/{{ elemento.id }}/'>
-                            <button type="submit">Borrar reseña</button>
+                            <button class="nes-btn is-error" type="submit">Borrar reseña</button>
                         </form>
                     {% endif %}
                 </li>
@@ -69,7 +69,7 @@
 <div>
     {% if user.is_authenticated %}
         <form method="GET" action="/resenas/nueva/{{juego.id}}/">
-            <button type="submit">Escribir reseña</button>
+            <button class="nes-btn is-success" type="submit">Escribir reseña</button>
         </form>
     {% endif %}
 </div>

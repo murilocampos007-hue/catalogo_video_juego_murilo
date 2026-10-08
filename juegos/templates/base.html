@@ -2,32 +2,143 @@
 <html lang = "es">
 
 <head> <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Catálogo RPG/JRPG </title>
+        <link href="https://unpkg.com/nes.css/css/nes-core.min.css" rel="stylesheet"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Press+Start+2P&display=swap" rel="stylesheet">
+            
+    <style>
+        body {
+            font-family: 'Pixelify Sans';
+            background: linear-gradient(to bottom, #0000ad 0%, #000080 30%, #000050 70%, #000020 100%); 
+            color:white; 
+            min-height: 100vh;
+            margin: 20px;
+        }
+
+        a {
+            color:plum
+         }
+
+        h1, h2, h3 {
+            font-family: 'Press Start 2P';
+        }
+
+        a h1 {
+            color: white;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .usuario{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: wrap;
+        } 
+
+        .tarjeta{
+            width: 440px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border:2px solid white;
+            padding:10px;
+        }
+
+        .tarjeta img{
+            width: 50%;
+        }
+
+        .nes-btn {
+            margin: 25px;
+        }
+
+        input, textarea, select  {
+            font-family: inherit;
+            padding: 10px;
+            border: 2px solid white;
+            width: 300px;
+            max-width: 100%;
+        }
+
+        label {
+            display: block;
+        }
+
+        li {
+            margin-bottom: 20px;
+        }
+
+        a:hover {
+            color:gold;
+        }
+
+        h1 a:hover {
+            color: gold;
+        }
+
+        .info {
+            margin-bottom:30px;
+        }
+
+        .info h3, h2 {
+            margin-top: 30;
+            margin-bottom:3px;
+        }
+
+        .info p, a {
+            margin:0px;
+        }
+
+        .portada {
+            display: block;
+            margin-bottom: 30px;
+            max-width: 300px;
+            border: 2px solid white;
+        }
+
+        .botones {
+            display: flex;
+            gap: 0px;
+        }
+    </style>
+
 </head>
+
 <body>
-    <h1> 🎮 LOS MEJORES JUEGOS RPG/JRPG QUE PUEDE ENCONTRAR! </h1><hr>
+    <header>
+       <a href='/catalogo/'><h1> 🎮 LOS MEJORES JUEGOS RPG/JRPG QUE PUEDE ENCONTRAR! </h1></a>
 
-    {% block cabecera %}
-    {% if user.is_authenticated %}
-        <div> Hola, <a href='/perfiles/{{ user.id }}/'>{{ user.username }}!</a> </div>
+        {% block cabecera %}
+        <div class="usuario">{% if user.is_authenticated %}
+            Hola, <a href='/perfiles/{{ user.id }}/'>{{ user.username }}!</a>
 
-        <form method="POST" action="/accounts/logout/">
-            {% csrf_token %}
-            <button type="submit">Salir</button>
-        </form>
+            <form method="POST" action="/accounts/logout/">
+                {% csrf_token %}
+                <button class="nes-btn is-error" type="submit">Salir</button>
+            </form>
 
-    {% else %}
-        <form method="GET" action="/accounts/login/">
-            <button type="submit">Entrar</button>
-        </form>
-        
-        <form method="GET" action="/registro/">
-            <button type="submit">Registrarse</button>
-        </form>
+        {% else %}
+            <form method="GET" action="/accounts/login/">
+                <button class="nes-btn is-primary" type="submit">Entrar</button>
+            </form>
+            
+            <form method="GET" action="/registro/">
+                <button class="nes-btn is-success" type="submit">Registrarse</button>
+            </form>
 
-    {% endif %}
-    {% endblock %}
-
+        {% endif %} </div>
+        {% endblock %}
+    </header>
+    <hr>
     {% block contenido %}{% endblock %}
 </body>
 </html>

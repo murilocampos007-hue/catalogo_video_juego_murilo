@@ -38,6 +38,9 @@ class ResenaForm(forms.ModelForm):
         model = Resena
         fields = ['puntuacion', 'comentario',
         ]
+        widgets = {
+            'puntuacion': forms.NumberInput(attrs={'min': 1, 'max': 10})
+        }
 
 
 class PerfilForm(forms.ModelForm):

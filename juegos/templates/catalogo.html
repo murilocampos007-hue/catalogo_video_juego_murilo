@@ -3,15 +3,15 @@
     <h2>Catálogo de Franquicias</h2>
     {% if perms.juegos.add_franquicia %}
         <form method="GET" action="/franquicias/nuevo/">
-            <button type="submit">Añadir franquicias</button>
+            <button class="nes-btn is-success" type="submit">Añadir franquicias</button>
         </form>
     {% endif %}
-    <ul>
-        {% for elemento in franquicias %}
-            <li>
-                {{ elemento.nombre }} 
-                <a href="/franquicias/{{ elemento.id }}/"> [+ Ver ficha] </a>
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="catalogo">
+            {% for elemento in franquicias %}
+                <div class="tarjeta">
+                    <img src="{{ elemento.imagen }}" alt="Franquicia">
+                    {{ elemento.nombre }} 
+                    <a href="/franquicias/{{ elemento.id }}/"> [+ Ver ficha] </a> </div>
+            {% endfor %}
+    </div>
 {% endblock %}

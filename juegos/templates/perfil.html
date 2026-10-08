@@ -2,23 +2,23 @@
 {% block cabecera %} {% endblock %}
 {% block contenido %}
 {% if perfil.foto %}
-    <div> <img src="{{ perfil.foto }}" alt="{{ perfil.usuario }}"> </div>
+    <div class="portada"> <img src="{{ perfil.foto }}" alt="{{ perfil.usuario }}"> </div>
 {% endif %}
 
-<div> <h3> {{ perfil.usuario }} </h3> </div>
-<div> <h3> Biografia </h3> <p> {{ perfil.biografia }} </p> </div>
-<div> <h3> País </h3> <p> {{ perfil.pais }} </p> </div>
-<div> <h3> Plataforma favorita </h3> <p> {{ perfil.plataforma_favorita }} </p> </div>
+<div class="info"> <h3> {{ perfil.usuario }} </h3> </div>
+<div class="info"> <h3> Biografía </h3> <p> {{ perfil.biografia }} </p> </div>
+<div class="info"> <h3> País </h3> <p> {{ perfil.pais }} </p> </div>
+<div class="info"> <h3> Plataforma favorita </h3> <p> {{ perfil.plataforma_favorita }} </p> </div>
 {% if perfil.juego_favorito %}
-    <div> <h3> Juego Favorito </h3> <a href="/juegos/{{ perfil.juego_favorito.id }}/"> {{ perfil.juego_favorito }} </a> </div>
+    <div class="info"> <h3> Juego Favorito </h3> <a href="/juegos/{{ perfil.juego_favorito.id }}/"> {{ perfil.juego_favorito }} </a> </div>
 {% endif %}
 
 {% if perfil.usuario == user %}
-    <form method="GET" action='/perfiles/editar/'>
-        <button type="submit">Editar perfil</button>
+    <div class="botones"><form method="GET" action='/perfiles/editar/'>
+        <button class="nes-btn is-warning" type="submit">Editar perfil</button>
     </form>
         <form method="GET" action='/perfiles/borrar/'>
-        <button type="submit">Borrar perfil</button>
-    </form>
+        <button class="nes-btn is-error" type="submit">Borrar perfil</button>
+    </form> </div>
 {% endif %}
 {% endblock %}
