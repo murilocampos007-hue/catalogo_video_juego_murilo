@@ -7,9 +7,9 @@
 <body>
     <h1> 🎮 LOS MEJORES JUEGOS RPG/JRPG QUE PUEDE ENCONTRAR! </h1><hr>
 
-     {% block cabecera %}
+    {% block cabecera %}
     {% if user.is_authenticated %}
-        <div> Hola, {{ user.username }}!</div>
+        <div> Hola, <a href='/perfiles/{{ user.id }}/'>{{ user.username }}!</a> </div>
 
         <form method="POST" action="/accounts/logout/">
             {% csrf_token %}

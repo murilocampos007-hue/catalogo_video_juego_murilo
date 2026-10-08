@@ -35,4 +35,7 @@ urlpatterns = [
     path('resenas/nueva/<int:id_juego>/', views.crear_resena, name='crear_resena'),
     path('resenas/editar/<int:id_resena>/', views.editar_resena, name='editar_resena'),
     path('resenas/borrar/<int:id_resena>/', views.borrar_resena, name='borrar_resena'),
+    path('perfiles/<int:id_usuario>/', views.ver_perfil, name='ver_perfil'),
+    path('perfiles/editar/', views.editar_perfil, name='editar_perfil'),
+    path('perfiles/borrar/', views.borrar_perfil, name='borrar_perfil'),
 ]

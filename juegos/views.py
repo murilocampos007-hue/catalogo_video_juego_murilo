@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Franquicia, Juego, Resena 
-from .forms import JuegoForm, FranquiciaForm, ResenaForm
+from .models import Franquicia, Juego, Resena, User, Perfil
+from .forms import JuegoForm, FranquiciaForm, ResenaForm, PerfilForm
 import logging
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import UserCreationForm 
@@ -213,3 +213,46 @@ def borrar_resena(request, id_resena):
         except Exception:
             logger.exception("Error al borrar la reseña.")
     return render(request, 'borrar_resena.html', {'resena': resena_del})
+
+
+def ver_perfil(request, id_usuario):
+    usuario = get_object_or_404(User, id=id_usuario)
+    perfil, creado = Perfil.objects.get_or_create(usuario=usuario)
+    return render(request, 'perfil.html', {'perfil': perfil})
+
+
+@login_required
+def editar_perfil(request):
+    perfil, creado = Perfil.objects.get_or_create(usuario=request.user)
+    if request.method == "POST":
+        form = PerfilForm(request.POST, instance=perfil)
+        if form.is_valid():
+            try:
+                editor = form.save()
+                logger.info(f"El Perfil {editor.usuario} se editó con éxito.")
+                return redirect('ver_perfil', id_usuario=request.user.id)
+    
+            except Exception:
+                logger.exception("Error al editar Perfil.")
+                form.add_error(None, "No se pudo editar el Perfil.")
+    
+    else:
+        form = PerfilForm(instance=perfil)
+    return render(request, 'formulario.html', {'form': form})
+
+
+@login_required
+def borrar_perfil(request):
+    perfil_del = request.user
+    if request.method == "POST":
+        try:
+            perfil_del.delete()
+            logger.info(f"La cuenta {perfil_del.username} se borró con éxito.")
+            return redirect ('catalogo')
+           
+        except Exception:
+            logger.exception("Error al borrar la cuenta.")
+    return render(request, 'borrar_cuenta.html', {'perfil': perfil_del})
+
+    
+

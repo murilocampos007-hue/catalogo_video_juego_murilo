@@ -15,10 +15,10 @@
 
     <img src="{{ juego.imagen }}" alt="{{ juego.titulo }}">
     <div> <h3> Fecha </h3> <p> {{ juego.fecha_lanzamiento }} </p> </div>
-    <div> <h3> <p> Desarrolladora </h3> <p> {{ juego.desarrollador }} </p> </div>
-    <div> <h3> <p> Distribuidora </h3> <p> {{ juego.distribuidor }} </p> </div>
-    <div> <h3> <p> Franquia </h3> <p> {{ juego.franquicia }} </p> </div>
-    <div> <h3> <p> Descripción </h3> <p> {{ juego.descripcion }} </p> </div>
+    <div> <h3> Desarrolladora </h3> <p> {{ juego.desarrollador }} </p> </div>
+    <div> <h3> Distribuidora </h3> <p> {{ juego.distribuidor }} </p> </div>
+    <div> <h3> Franquia </h3> <p> {{ juego.franquicia }} </p> </div>
+    <div> <h3> Descripción </h3> <p> {{ juego.descripcion }} </p> </div>
 
  <div> <h3>Géneros</h3>
     <ul>
@@ -45,7 +45,7 @@
             <ul>
                 {% for elemento in juego.resena_set.all %}
                 <li>
-                    <div><a href="#"> {{ elemento.usuario }}  </a>, {{ elemento.puntuacion }}/10 ({{ elemento.fecha }})</div>
+                    <div><a href="/perfiles/{{ elemento.usuario.id }}/"> {{ elemento.usuario }}  </a>, {{ elemento.puntuacion }}/10 ({{ elemento.fecha }})</div>
                     {{ elemento.comentario }}
                     {% if elemento.usuario == user %}
                         <form method="GET" action='/resenas/editar/{{ elemento.id }}/'>
