@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 from pathlib import Path
 import dj_database_url
 import logging
+import os
+from dotenv import load_dotenv 
+load_dotenv()
 
 
 
@@ -24,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-l6fn2i#3iadq60(!c*z$j4#zdnzkr$l-vgm#^0m4q!n*mjh%=p'
+SECRET_KEY = os.getenv('LLAVE')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
