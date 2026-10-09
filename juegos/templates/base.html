@@ -135,13 +135,6 @@
                 <button class="nes-btn is-success" type="submit">Registrarse</button>
             </form>
         
-        {% endif %}
-        
-        {% if perms.juegos.change_empresa %}
-        <form method="GET" action="/gestion/">
-            <button class="nes-btn is-primary" type="submit">Gestionar</button>
-        </form>
-
         {% endif %} </div>
         {% endblock %}
     </header>
