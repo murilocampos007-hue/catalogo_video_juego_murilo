@@ -4,42 +4,38 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 
-
-class Empresa(models.Model):
-    """Empresa que desarrolla o distribuye juegos."""
+class ElementoCatalogo(models.Model):
     nombre = models.CharField(max_length=200, unique=True)
 
     def __str__(self):
         return self.nombre
 
+    class Meta:
+        abstract = True
+
+
+class Empresa(ElementoCatalogo):
+    """Empresa que desarrolla o distribuye juegos."""
+    pass
+
     
 
-class Franquicia(models.Model):
+class Franquicia(ElementoCatalogo):
     """Franquicia de juegos."""
-    nombre = models.CharField(max_length=200, unique=True)
     descripcion = models.TextField(verbose_name="Descripción")
     imagen = models.URLField(max_length=500)
 
-    def __str__(self):
-        return self.nombre
-
 
     
-class Genero(models.Model):
+class Genero(ElementoCatalogo):
     """Géneros de videojuegos."""
-    nombre = models.CharField(max_length=200, unique=True)
-
-    def __str__(self):
-        return self.nombre
+    pass
 
 
 
-class Plataforma(models.Model):
+class Plataforma(ElementoCatalogo):
     """Plataformas como consolas, PC o mobile."""
-    nombre = models.CharField(max_length=200, unique=True)
-
-    def __str__(self):
-        return self.nombre
+    pass
 
 
     
@@ -58,8 +54,20 @@ class Juego(models.Model):
     def __str__(self):
         return self.titulo
 
+    @property
+    def puntuacion_media(self):
+        resenas = self.resena_set.all()
+        if not resenas:
+            return None
+        
+        total = 0
+        for resena in resenas:
+            total += resena.puntuacion
+        media = total/len(resenas)
+        return round(media, 2)
 
 
+        
 class Resena(models.Model):
     """Reseñas por parte de los usuarios."""
     juego = models.ForeignKey(Juego, on_delete=models.CASCADE)
