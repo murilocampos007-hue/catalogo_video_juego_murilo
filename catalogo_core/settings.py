@@ -32,6 +32,10 @@ SECRET_KEY = os.getenv('LLAVE')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG") == "True"
 
+SESSION_COOKIE_SECURE = not DEBUG
+
+CSRF_COOKIE_SECURE = not DEBUG
+
 ALLOWED_HOSTS = [".vercel.app", "127.0.0.1"]
 
 
@@ -139,3 +143,4 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',
     filename='logging_catalogo.txt',
 )
+
