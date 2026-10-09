@@ -27,7 +27,7 @@ def mirar_ficha(request, id_juego):
     return render(request, 'detalle_juegos.html', {'juego': juego_seleccionado})
 
 
-@permission_required('juegos.add_juego')
+@permission_required('juegos.add_juego', raise_exception=True)
 def crear_juego(request):
     if request.method == "POST":
         form = JuegoForm(request.POST)
@@ -46,7 +46,7 @@ def crear_juego(request):
     return render(request, 'formulario.html', {'form': form})
 
 
-@permission_required('juegos.change_juego')
+@permission_required('juegos.change_juego', raise_exception=True)
 def editar_juego(request, id_juego):
     juego = get_object_or_404(Juego, id=id_juego)
     if request.method == "POST":
@@ -66,7 +66,7 @@ def editar_juego(request, id_juego):
     return render(request, 'formulario.html', {'form': form})
 
 
-@permission_required('delete.add_juego')
+@permission_required('delete.add_juego', raise_exception=True)
 def borrar_juego(request, id_juego):
     juego_del = get_object_or_404(Juego, id=id_juego)
     if request.method == "POST":
@@ -81,7 +81,7 @@ def borrar_juego(request, id_juego):
     return render(request, 'confirmar_borrado.html', {'juego': juego_del})
 
 
-@permission_required('juegos.add_franquicia')
+@permission_required('juegos.add_franquicia', raise_exception=True)
 def crear_franquicia(request):
     if request.method == "POST":
         form = FranquiciaForm(request.POST)
@@ -100,7 +100,7 @@ def crear_franquicia(request):
     return render(request, 'formulario.html', {'form': form})
 
 
-@permission_required('juegos.change_franquicia')
+@permission_required('juegos.change_franquicia', raise_exception=True)
 def editar_franquicia(request, id_franquicia):
     franquicia = get_object_or_404(Franquicia, id=id_franquicia)
     if request.method == "POST":
@@ -120,7 +120,7 @@ def editar_franquicia(request, id_franquicia):
     return render(request, 'formulario.html', {'form': form})
 
 
-@permission_required('juegos.delete_franquicia')
+@permission_required('juegos.delete_franquicia', raise_exception=True)
 def borrar_franquicia(request, id_franquicia):
     franquicia_del = get_object_or_404(Franquicia, id=id_franquicia)
     if request.method == "POST":
