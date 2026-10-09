@@ -1,16 +1,17 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Franquicia, Juego, Resena, User, Perfil, Empresa, Plataforma, Genero
+from .models import Franquicia, Juego, Resena, Perfil
 from .forms import JuegoForm, FranquiciaForm, ResenaForm, PerfilForm
 import logging
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import UserCreationForm 
+from django.contrib.auth.models import User
 logger = logging.getLogger(__name__)
 
 # Create your views here.
 
 
 def mirar_catalogo(request):
-    """Listado de franquicias y enseña todo en una única página."""
+    """Página principal: lista todas las franquicias."""
     todas_las_franquicias = Franquicia.objects.all()
     return render(request, 'catalogo.html', {'franquicias': todas_las_franquicias})
 
@@ -22,13 +23,14 @@ def mirar_franquicia(request, id_franquicia):
 
 
 def mirar_ficha(request, id_juego):
-    """Muestra la ficha completa de un juego."""
+    """Ficha de un juego, con sus reseñas."""
     juego_seleccionado = get_object_or_404(Juego, id=id_juego)
     return render(request, 'detalle_juegos.html', {'juego': juego_seleccionado})
 
 
 @permission_required('juegos.add_juego', raise_exception=True)
 def crear_juego(request):
+    """Añade un juego nuevo al catálogo.""" 
     if request.method == "POST":
         form = JuegoForm(request.POST)
         if form.is_valid():
@@ -48,6 +50,7 @@ def crear_juego(request):
 
 @permission_required('juegos.change_juego', raise_exception=True)
 def editar_juego(request, id_juego):
+    """Edita un juego y vuelve a su ficha."""
     juego = get_object_or_404(Juego, id=id_juego)
     if request.method == "POST":
         form = JuegoForm(request.POST, instance=juego)
@@ -66,8 +69,9 @@ def editar_juego(request, id_juego):
     return render(request, 'formulario.html', {'form': form})
 
 
-@permission_required('delete.add_juego', raise_exception=True)
+@permission_required('juegos.delete_juego', raise_exception=True)
 def borrar_juego(request, id_juego):
+    """Borra un juego después de confirmar."""
     juego_del = get_object_or_404(Juego, id=id_juego)
     if request.method == "POST":
         try:
@@ -83,6 +87,7 @@ def borrar_juego(request, id_juego):
 
 @permission_required('juegos.add_franquicia', raise_exception=True)
 def crear_franquicia(request):
+    """Añade una franquicia nueva."""
     if request.method == "POST":
         form = FranquiciaForm(request.POST)
         if form.is_valid():
@@ -102,6 +107,7 @@ def crear_franquicia(request):
 
 @permission_required('juegos.change_franquicia', raise_exception=True)
 def editar_franquicia(request, id_franquicia):
+    """Edita una franquicia.""" 
     franquicia = get_object_or_404(Franquicia, id=id_franquicia)
     if request.method == "POST":
         form = FranquiciaForm(request.POST, instance=franquicia)
@@ -122,6 +128,7 @@ def editar_franquicia(request, id_franquicia):
 
 @permission_required('juegos.delete_franquicia', raise_exception=True)
 def borrar_franquicia(request, id_franquicia):
+    """Borra una franquicia. Los juegos se quedan sin franquicia."""
     franquicia_del = get_object_or_404(Franquicia, id=id_franquicia)
     if request.method == "POST":
         try:
@@ -135,6 +142,7 @@ def borrar_franquicia(request, id_franquicia):
 
 
 def crear_cuenta(request):
+    """Registro de usuarios nuevos."""
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -154,6 +162,7 @@ def crear_cuenta(request):
 
 @login_required
 def crear_resena(request, id_juego):
+    """Guarda la reseña con el juego y el usuario que la escribe."""
     juego = get_object_or_404(Juego, id=id_juego)
     if request.method == "POST":
         form = ResenaForm(request.POST)
@@ -177,6 +186,7 @@ def crear_resena(request, id_juego):
 
 @login_required
 def editar_resena(request, id_resena):
+    """Solo el autor puede editar su reseña."""
     resena = get_object_or_404(Resena, id=id_resena)
     if resena.usuario != request.user:
         return redirect('detalle_juego', id_juego=resena.juego.id)
@@ -200,6 +210,7 @@ def editar_resena(request, id_resena):
 
 @login_required
 def borrar_resena(request, id_resena):
+    """La puede borrar el autor o alguien con permiso."""
     resena_del = get_object_or_404(Resena, id=id_resena)
     id_juego = resena_del.juego.id
     if resena_del.usuario != request.user and not request.user.has_perm('juegos.delete_resena'):
@@ -216,6 +227,7 @@ def borrar_resena(request, id_resena):
 
 
 def ver_perfil(request, id_usuario):
+    """Perfil público de un usuario. Si no existe, se crea vacío."""
     usuario = get_object_or_404(User, id=id_usuario)
     perfil, creado = Perfil.objects.get_or_create(usuario=usuario)
     return render(request, 'perfil.html', {'perfil': perfil})
@@ -223,6 +235,7 @@ def ver_perfil(request, id_usuario):
 
 @login_required
 def editar_perfil(request):
+    """Edita el perfil de quien ha iniciado sesión."""
     perfil, creado = Perfil.objects.get_or_create(usuario=request.user)
     if request.method == "POST":
         form = PerfilForm(request.POST, instance=perfil)
@@ -243,6 +256,7 @@ def editar_perfil(request):
 
 @login_required
 def borrar_perfil(request):
+    """Borra la cuenta entera: usuario, perfil y reseñas."""
     perfil_del = request.user
     if request.method == "POST":
         try:

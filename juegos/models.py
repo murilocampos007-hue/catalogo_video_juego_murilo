@@ -5,6 +5,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 # Create your models here.
 
 class ElementoCatalogo(models.Model):
+    """Clase base con el nombre, de la que heredan empresas, franquicias, 
+    géneros y plataformas."""
     nombre = models.CharField(max_length=200, unique=True)
 
     def __str__(self):
@@ -28,19 +30,19 @@ class Franquicia(ElementoCatalogo):
 
     
 class Genero(ElementoCatalogo):
-    """Géneros de videojuegos."""
+    """Género de un juego (RPG, JRPG, aventura...)."""
     pass
 
 
 
 class Plataforma(ElementoCatalogo):
-    """Plataformas como consolas, PC o mobile."""
+    """Plataforma donde sale un juego: consola, PC o móvil."""
     pass
 
 
     
 class Juego(models.Model):
-    """Representa un videojuego del catálogo."""
+    """Un videojuego del catálogo."""
     titulo = models.CharField(max_length=200, unique=True, verbose_name="Título")
     desarrollador = models.ForeignKey(Empresa, on_delete=models.SET_NULL, null=True, blank=True, related_name="juegos_desarrollados")
     distribuidor = models.ForeignKey(Empresa, on_delete=models.SET_NULL, null=True, blank=True, related_name="juegos_distribuidos")
@@ -56,6 +58,7 @@ class Juego(models.Model):
 
     @property
     def puntuacion_media(self):
+        """Nota media del juego según sus reseñas (None si no tiene)."""
         resenas = self.resena_set.all()
         if not resenas:
             return None
@@ -69,7 +72,7 @@ class Juego(models.Model):
 
         
 class Resena(models.Model):
-    """Reseñas por parte de los usuarios."""
+    """Reseña que un usuario escribe sobre un juego."""
     juego = models.ForeignKey(Juego, on_delete=models.CASCADE)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     puntuacion = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)], verbose_name="Puntuación")
