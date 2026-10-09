@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<div class="info"> <h2> Gestión </h2></div>
+
+<div class="info"> <h3> Empresas </h3>
+    <ul> 
+        {% for empresa in empresas %}
+           <li> {{ empresa.nombre }} </li>
+        {% endfor %}
+    </ul> </div>
+
+<div class="info"> <h3> Plataformas </h3>
+    <ul> 
+        {% for plataforma in plataformas %}
+            <li> {{ plataforma.nombre }} </li>
+        {% endfor %}
+    </ul> </div>
+
+<div class="info"> <h3> Géneros </h3>
+    <ul> 
+        {% for genero in generos %}
+            <li> {{ genero.nombre }} </li>
+        {% endfor %}
+    </ul> </div>
+{% endblock %}

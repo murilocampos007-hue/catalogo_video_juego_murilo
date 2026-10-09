@@ -8,10 +8,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Empresa(models.Model):
     """Empresa que desarrolla o distribuye juegos."""
     nombre = models.CharField(max_length=200, unique=True)
-    director_ejecutivo = models.CharField(max_length=200, verbose_name="director ejecutivo")
-    localizacion = models.CharField(max_length=200, verbose_name="localización")
-    anio_fundacion = models.IntegerField(verbose_name="Año de Fundación")
-    descripcion = models.TextField(verbose_name="Descripción")
 
     def __str__(self):
         return self.nombre
@@ -27,8 +23,8 @@ class Franquicia(models.Model):
     def __str__(self):
         return self.nombre
 
-    
 
+    
 class Genero(models.Model):
     """Géneros de videojuegos."""
     nombre = models.CharField(max_length=200, unique=True)
@@ -36,11 +32,11 @@ class Genero(models.Model):
     def __str__(self):
         return self.nombre
 
+
+
 class Plataforma(models.Model):
     """Plataformas como consolas, PC o mobile."""
     nombre = models.CharField(max_length=200, unique=True)
-    fabricante = models.ForeignKey(Empresa, on_delete=models.SET_NULL, null=True, blank=True)
-    fecha_lanzamiento = models.DateField(null=True, blank=True, verbose_name="Fecha de Lanzamiento")
 
     def __str__(self):
         return self.nombre

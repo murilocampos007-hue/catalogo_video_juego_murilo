@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Franquicia, Juego, Resena, User, Perfil
+from .models import Franquicia, Juego, Resena, User, Perfil, Empresa, Plataforma, Genero
 from .forms import JuegoForm, FranquiciaForm, ResenaForm, PerfilForm
 import logging
 from django.contrib.auth.decorators import login_required, permission_required
@@ -255,4 +255,10 @@ def borrar_perfil(request):
     return render(request, 'borrar_cuenta.html', {'perfil': perfil_del})
 
     
-
+@permission_required('juegos.change_empresa', raise_exception=True)
+def gestion(request):
+    todas_las_empresas = Empresa.objects.all()
+    todas_las_plataformas = Plataforma.objects.all()
+    todos_los_generos = Genero.objects.all()
+    return render(request, 'gestion.html', {'empresas': todas_las_empresas, 
+    'plataformas': todas_las_plataformas, 'generos': todos_los_generos})
