@@ -38,5 +38,4 @@ urlpatterns = [
     path('perfiles/<int:id_usuario>/', views.ver_perfil, name='ver_perfil'),
     path('perfiles/editar/', views.editar_perfil, name='editar_perfil'),
     path('perfiles/borrar/', views.borrar_perfil, name='borrar_perfil'),
-    path('gestion/', views.gestion, name='gestion')
 ]

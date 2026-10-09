@@ -56,3 +56,4 @@ class PerfilForm(forms.ModelForm):
         if texto == None:
             raise forms.ValidationError("Nombre tiene que empezar con un número o letra.")
         return verificacion_franquicia
+

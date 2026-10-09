@@ -253,12 +253,3 @@ def borrar_perfil(request):
         except Exception:
             logger.exception("Error al borrar la cuenta.")
     return render(request, 'borrar_cuenta.html', {'perfil': perfil_del})
-
-    
-@permission_required('juegos.change_empresa', raise_exception=True)
-def gestion(request):
-    todas_las_empresas = Empresa.objects.all()
-    todas_las_plataformas = Plataforma.objects.all()
-    todos_los_generos = Genero.objects.all()
-    return render(request, 'gestion.html', {'empresas': todas_las_empresas, 
-    'plataformas': todas_las_plataformas, 'generos': todos_los_generos})
