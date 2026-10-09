@@ -43,8 +43,8 @@
 <div>
     <h3>Reseñas</h3>
         {% if juego.puntuacion_media %} 
-        <p> Nota média: {{ media }}/10 </p>
-        {% endif &}
+        <p> Nota média: {{ juego.media }}/10 </p>
+        {% endif %}
             <ul>
                 {% for elemento in juego.resena_set.all %}
                 <li class="nes-container">
