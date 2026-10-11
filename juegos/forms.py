@@ -23,7 +23,7 @@ class JuegoForm(FormularioCatalogo):
         ]
 
         widgets = {
-                    'fecha_lanzamiento': forms.DateInput(attrs={'type': 'date'})
+                    'fecha_lanzamiento': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d')
                 }
 
     def clean_titulo(self):
