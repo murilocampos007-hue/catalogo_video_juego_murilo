@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 {% block contenido %}
     <h2>{{ juego.titulo }}</h2>
-    <div class="botones">{% if perms.juegos.change_juego %}
+    <div class="botones">{% if juego.franquicia %}
+        <form method="GET" action="{% url 'detalle_franquicia' juego.franquicia.id %}">
+            <button class="nes-btn is-primary" type="submit">Volver</button>
+        </form>
+    {% endif %} 
+
+    {% if perms.juegos.change_juego %}
         <form method="GET" action="/juegos/editar/{{juego.id}}/">
             <button class="nes-btn is-warning" type="submit">Editar juego</button>
         </form>

@@ -22,6 +22,10 @@ class JuegoForm(FormularioCatalogo):
         'generos', 'plataformas', 'fecha_lanzamiento', 'descripcion', 'imagen'
         ]
 
+        widgets = {
+                    'fecha_lanzamiento': forms.DateInput(attrs={'type': 'date'})
+                }
+
     def clean_titulo(self):
         """Valida el título con comprobar_inicio."""
         verificacion_juego = self.cleaned_data['titulo']
